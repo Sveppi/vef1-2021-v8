@@ -57,10 +57,6 @@ function playRound(player) {
 
   const result = checkGame(player, computer);
 
-  if (result != 0){
-    currentRound++;
-  }
-
   if (result === 1){
     playerWins++;
   }
@@ -80,10 +76,12 @@ function playRound(player) {
   });
 
   // Uppfærum teljara ef ekki jafntefli, verðum að gera eftir að við setjum titil
- 
+  if (result != 0){
+    currentRound++;
+  }
 
   // Ákveðum hvaða takka skuli sýna
-  if (currentRound < totalRounds){
+  if (currentRound <= totalRounds){
     document.querySelector(".finishGame").classList.add("hidden");
     document.querySelector(".nextRound").classList.remove("hidden");
   }else {
@@ -140,7 +138,10 @@ function finishGame() {
   if (playerWins > computerWins){
     totalWins++;
     resultDesc = "Þú vannst " + playerWins + "–" + computerWins;
-  }else resultDesc = "Tölvan vann " + playerWins + "–" + computerWins;
+  }
+  else if (computerWins > playerWins){
+    resultDesc = "Tölvan vann " + playerWins + "–" + computerWins;
+  }
 
   console.log(resultDesc);
   
@@ -159,10 +160,7 @@ function finishGame() {
 
   //el með list item, setja inn relevant einingar, appendchild við list item
   const resultList = document.querySelector(".games__list");
-  console.log(resultList);
   const resultReport = el("li", resultDesc);
-  console.log(resultReport);
-  resultReport.classList.add("li");
   resultList.appendchild(resultReport);
 
   // Núllstillum breytur
