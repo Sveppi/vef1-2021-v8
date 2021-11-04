@@ -1,5 +1,8 @@
 // TODO hér vantar að sækja viðeigandi föll úr öðrum modules
-import { show } from './lib/ui.js';
+import { show } from "./lib/ui.js";
+import { createButtons } from "./lib/ui.js";
+import { updateResultScreen } from "./lib/ui.js";
+
 
 /** Hámarks fjöldi best-of leikja, ætti að vera jákvæð heiltala stærri en 0 */
 const MAX_BEST_OF = 10;
@@ -44,6 +47,7 @@ const games = [];
  * @param {number} player Það sem spilari spilaði
  */
 function playRound(player) {
+  show("play");
   // Komumst að því hvað tölva spilaði og athugum stöðu leiks
 
   // Uppfærum result glugga áður en við sýnum, hér þarf að importa falli
@@ -70,19 +74,48 @@ function playRound(player) {
  */
 function round(e) {
   // TODO útfæra
+  document.querySelector(".button").addEventListener("click", () => totalRounds = button.getAttribute('data-num'));
+  
+  
+  console.log(totalRounds);
+  //setja gildi á takkanum
+  show("play");
 }
+
+function setRounds(e){}
 
 // Takki sem byrjar leik
 document
-  .querySelector('.start button')
-  .addEventListener('click', () => show('rounds'));
+  .querySelector(".start button")
+  .addEventListener("click", () => startClick());
+
+/**
+ * Fall til að fela "Byrja leik" takkann og birta spurningu um hversu margar
+ * umferðir skal spila
+ * @param {*} e
+ */
+function startClick(e) {
+  show("rounds");
+  document.querySelector(".start button").classList.add("hidden");
+}
+
 
 // Búum til takka
-// createButtons(MAX_BEST_OF, round);
+createButtons(MAX_BEST_OF, round);
+
+
 
 // Event listeners fyrir skæri, blað, steinn takka
 // TODO
-document.querySelector('button.scissor')
+document
+  .querySelector("button.scissor")
+  .addEventListener("click", () => playRound("scissor"));
+document
+  .querySelector("button.paper")
+  .addEventListener("click", () => playRound("paper"));
+document
+  .querySelector("button.rock")
+  .addEventListener("click", () => playRound("rock"));
 
 /**
  * Uppfærir stöðu yfir alla spilaða leiki þegar leik lýkur.
@@ -96,10 +129,15 @@ function finishGame() {
   // Bætum leik við lista af spiluðum leikjum
 
   // Núllstillum breytur
+  playerWins = 0;
+  computerWins = 0;
 
   // Byrjum nýjan leik!
 }
 
 // Næsta umferð og ljúka leik takkar
-document.querySelector('button.finishGame').addEventListener('click', finishGame);
+document
+  .querySelector("button.finishGame")
+  .addEventListener("click", finishGame);
 // TODO takki sem fer með í næstu umferð
+document.querySelector("button.nextRound").addEventListener("click", round);
