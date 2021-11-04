@@ -142,8 +142,6 @@ function finishGame() {
   else if (computerWins > playerWins){
     resultDesc = "Tölvan vann " + playerWins + "–" + computerWins;
   }
-
-  console.log(resultDesc);
   
   games.push({player: playerWins, computer: computerWins, wins: playerWins > computerWins});
 
@@ -161,7 +159,7 @@ function finishGame() {
   //el með list item, setja inn relevant einingar, appendchild við list item
   const resultList = document.querySelector(".games__list");
   const resultReport = el("li", resultDesc);
-  resultList.appendchild(resultReport);
+  resultList.appendChild(resultReport);
 
   // Núllstillum breytur
   playerWins = 0;
