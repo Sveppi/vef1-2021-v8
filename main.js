@@ -155,10 +155,10 @@ function finishGame() {
   document.querySelector(".games__wins").textContent = totalWins.toString();
   document.querySelector(".games__losses").textContent = totalLosses.toString();
   document.querySelector(".games__winratio").textContent = (
-    100 * (totalWins / totalGames).toFixed(2)
+    100 * (totalWins / totalGames).toFixed(4)
   ).toString();
   document.querySelector(".games__lossratio").textContent = (
-    100 * (totalLosses / totalGames).toFixed(2)
+    100 * (totalLosses / totalGames).toFixed(4)
   ).toString();
 
   //el með list item, setja inn relevant einingar, appendchild við list item
