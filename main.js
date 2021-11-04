@@ -1,4 +1,3 @@
-// TODO hér vantar að sækja viðeigandi föll úr öðrum modules
 import { show } from "./lib/ui.js";
 import { el } from "./lib/helpers.js";
 import { createButtons } from "./lib/ui.js";
@@ -51,16 +50,12 @@ const games = [];
 function playRound(player) {
   // Komumst að því hvað tölva spilaði og athugum stöðu leiks
   const computer = computerPlay().toString();
- 
-  console.log("spilar:" + player);
-  console.log("tölva:" + computer);
 
   const result = checkGame(player, computer);
 
-  if (result === 1){
+  if (result === 1) {
     playerWins++;
-  }
-  else if (result === -1){
+  } else if (result === -1) {
     computerWins++;
   }
 
@@ -76,20 +71,24 @@ function playRound(player) {
   });
 
   // Uppfærum teljara ef ekki jafntefli, verðum að gera eftir að við setjum titil
-  if (result != 0){
-    currentRound++;
-  }
+  if (result != 0) currentRound++;
 
   // Ákveðum hvaða takka skuli sýna
-  if (currentRound <= totalRounds){
+  if (currentRound <= totalRounds) {
     document.querySelector(".finishGame").classList.add("hidden");
     document.querySelector(".nextRound").classList.remove("hidden");
-  }else {
+  } else {
     document.querySelector(".finishGame").classList.remove("hidden");
     document.querySelector(".nextRound").classList.add("hidden");
   }
 
-  if (playerWins >= Math.floor(totalRounds / 2 + 1) || computerWins >= Math.floor(totalRounds / 2 + 1)){
+  if (playerWins >= Math.floor(totalRounds / 2 + 1)) {
+    document.querySelector(".finishGame").classList.remove("hidden");
+    document.querySelector(".nextRound").classList.add("hidden");
+    finishGame();
+  } else if (computerWins >= Math.floor(totalRounds / 2 + 1)) {
+    document.querySelector(".finishGame").classList.remove("hidden");
+    document.querySelector(".nextRound").classList.add("hidden");
     finishGame();
   }
 
@@ -102,10 +101,10 @@ function playRound(player) {
  * @param {Event} e Upplýsingar um atburð
  */
 function round(e) {
+  //setja gildi á takkanum
   totalRounds = e.target.dataset.num;
   currentRound = 1;
 
-  //setja gildi á takkanum
   show("play");
 }
 
@@ -135,15 +134,18 @@ document
 function finishGame() {
   let resultDesc;
   // Bætum við nýjasta leik, Uppfærum stöðu
-  if (playerWins > computerWins){
+  if (playerWins > computerWins) {
     totalWins++;
     resultDesc = "Þú vannst " + playerWins + "–" + computerWins;
-  }
-  else if (computerWins > playerWins){
+  } else if (computerWins > playerWins) {
     resultDesc = "Tölvan vann " + playerWins + "–" + computerWins;
   }
-  
-  games.push({player: playerWins, computer: computerWins, wins: playerWins > computerWins});
+
+  games.push({
+    player: playerWins,
+    computer: computerWins,
+    wins: playerWins > computerWins,
+  });
 
   const totalGames = games.length;
   const totalLosses = totalGames - totalWins;
@@ -152,9 +154,12 @@ function finishGame() {
   document.querySelector(".games__played").textContent = totalGames.toString();
   document.querySelector(".games__wins").textContent = totalWins.toString();
   document.querySelector(".games__losses").textContent = totalLosses.toString();
-  document.querySelector(".games__winratio").textContent = (100 * (totalWins / totalGames).toFixed(2)).toString();
-  document.querySelector(".games__lossratio").textContent = (100 * (totalLosses / totalGames).toFixed(2)).toString();
-
+  document.querySelector(".games__winratio").textContent = (
+    100 * (totalWins / totalGames).toFixed(2)
+  ).toString();
+  document.querySelector(".games__lossratio").textContent = (
+    100 * (totalLosses / totalGames).toFixed(2)
+  ).toString();
 
   //el með list item, setja inn relevant einingar, appendchild við list item
   const resultList = document.querySelector(".games__list");
@@ -172,6 +177,8 @@ function finishGame() {
 // Næsta umferð og ljúka leik takkar
 document
   .querySelector("button.finishGame")
-  .addEventListener("click", finishGame);
+  .addEventListener("click", () => show("start"));
 
-document.querySelector("button.nextRound").addEventListener("click", () => show("play"));
+document
+  .querySelector("button.nextRound")
+  .addEventListener("click", () => show("play"));
